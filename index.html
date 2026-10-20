@@ -1,17 +1,736 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Page</title>
+    <title>RCL Members</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; text-align: center; }
-        img { max-width: 100%; height: auto; border-radius: 8px; }
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #1a365d; /* Dark blue background */
+        }
+
+        /* Main Container */
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Top Info Bar (Page Indicator) */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 10px auto;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .page-number {
+            background-color: #e53935; /* Red badge */
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* Header Styling */
+        .header-title {
+            color: #e53935; /* Red color */
+            text-align: center;
+            font-size: clamp(1.2rem, 4vw, 2.5rem); /* Responsive font size */
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content Area (Image + Logo) */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+            position: relative;
+        }
+
+        /* Center Image Card */
+        .image-card {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        /* Logo Styling */
+        .logo-section {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .logo-section img {
+            width: 100px; 
+            height: auto;
+        }
+
+        .logo-text {
+            color: #111;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* -------------------------------------
+           NAMES SECTION (Supports up to 6 people)
+           ------------------------------------- */
+        .names-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows wrapping to multiple rows */
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            gap: 20px 10px; /* Row gap 20px, column gap 10px */
+        }
+
+        .person {
+            display: flex;
+            flex-direction: column;
+            /* flex-basis sets the width. On desktop, if there are more than 3, 
+               they wrap to the next line. */
+            flex: 1 1 30%; 
+            min-width: 150px;
+        }
+
+        /* Alternate Text Alignment for a neat look */
+        .person:nth-child(odd) {
+            text-align: left;
+            align-items: flex-start;
+        }
+
+        .person:nth-child(even) {
+            text-align: right;
+            align-items: flex-end;
+        }
+
+        .role {
+            color: #e53935;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: clamp(0.75rem, 2.5vw, 1rem);
+            margin-bottom: 5px;
+        }
+
+        .name {
+            color: #ffffff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            letter-spacing: 1px;
+        }
+
+        /* -------------------------------------
+           DESKTOP LAYOUT & LOGO ALTERNATION
+           ------------------------------------- */
+        @media (min-width: 768px) {
+            .main-content {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 40px;
+            }
+
+            .image-card {
+                max-width: 65%;
+            }
+
+            .logo-section {
+                flex: 1; 
+            }
+
+            /* Default Layout: Logo Left */
+            .layout-logo-left .main-content {
+                flex-direction: row;
+            }
+
+            /* Alternating Layout: Logo Right */
+            .layout-logo-right .main-content {
+                flex-direction: row-reverse;
+            }
+
+            /* Keep names aligned with the image */
+            .names-container {
+                width: 65%; 
+            }
+            
+            .layout-logo-left .names-container {
+                margin-left: auto; 
+            }
+            
+            .layout-logo-right .names-container {
+                margin-right: auto; 
+            }
+
+            /* Ensure text alignment looks good on desktop with multiple names */
+            .person {
+                text-align: left !important;
+                align-items: flex-start !important;
+            }
+        }
+
+        /* -------------------------------------
+           MOBILE ADJUSTMENTS FOR NAMES
+           ------------------------------------- */
+        @media (max-width: 600px) {
+            .names-container {
+                flex-direction: column; /* Stack names vertically on phones */
+                gap: 15px;
+                align-items: center;
+            }
+            
+            /* Center all text on mobile for a cleaner look */
+            .person, .person:nth-child(odd), .person:nth-child(even) {
+                text-align: center;
+                align-items: center;
+                width: 100%;
+            }
+        }
     </style>
 </head>
-<body>
-    <h1>Welcome to My Page</h1>
-    <p>Here is the description text I want to show you.</p>
-    <img src="image link here" alt="My Image">
+
+<!-- 
+    HOW TO USE THIS TEMPLATE:
+    
+    1. To switch the logo position, change class="layout-logo-left" to class="layout-logo-right" on the body tag.
+    2. Update the page numbers at the top (.page-number) and bottom (.footer-page).
+    3. Replace the image src. 
+    4. To add/remove people, simply copy or delete the <div class="person"> blocks inside the names-container. 
+       The CSS will automatically handle up to 6 people nicely.
+-->
+
+<body class="layout-logo-left">
+
+    <div class="page-container">
+        
+        <!-- Top Bar: Title of the page and Page indicator -->
+        <div class="top-bar">
+            <span>SPORT COMMITTEE</span>
+            <span class="page-number">Page 1</span>
+        </div>
+
+        <!-- Main Header -->
+        <h1 class="header-title">SPORT COMMITTEE</h1>
+
+        <div class="main-content">
+            
+            <!-- LOGO SECTION -->
+            <div class="logo-section">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\images.jpg" alt="School Logo">
+                <div class="logo-text">Carpe Diem</div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="image-card">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\WhatsApp Image 2026-10-18 at 11.58.44 AM.jpeg" alt="Sport Committee Members">
+            </div>
+
+        </div>
+
+        <!-- NAMES SECTION -->
+        <div class="names-container">
+          
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">JAN-HENDRIK ESPACH</div>
+            </div>
+            
+            <div class="person">
+                <div class="role">VICE CHAIR</div>
+                <div class="name">ORATILE RAMOKOATSI</div>
+            </div>
+            
+            <div class="person">
+                <div class="role">CHAIRPERSON</div>
+                <div class="name">SIANE KRAMER</div>
+            </div>
+            
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">KYLIN FOURIE</div>
+            </div>
+            
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">TYLER HAMILTON</div>
+            </div>
+
+            <!-- Person 6 -->
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">REABETSWE PHALATSI</div>
+            </div>
+        </div>
+
+        <!-- Footer Page Indicator -->
+        <div style="text-align: center; color: #888; margin-top: 30px; font-size: 0.8rem;">
+            Page 1 
+        </div>
+
+    </div>
+  </body>
+    <body class="layout-logo-right">
+
+    <div class="page-container">
+        
+        <!-- Top Bar: Title of the page and Page indicator -->
+        <div class="top-bar">
+            <span>SOCIAL COMITEE</span>
+            <span class="page-number">Page 2</span>
+        </div>
+
+        <!-- Main Header -->
+        <h1 class="header-title">SOCIAL COMITEE</h1>
+
+        <div class="main-content">
+            
+            <!-- LOGO SECTION -->
+            <div class="logo-section">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\images.jpg" alt="School Logo">
+                <div class="logo-text">Carpe Diem</div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="image-card">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\WhatsApp Image 2026-10-18 at 11.58.44 AM.jpeg" alt="Sport Committee Members">
+            </div>
+
+        </div>
+
+        <!-- NAMES SECTION -->
+        <div class="names-container">
+          
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">DINTLE MOTLOUNG</div>
+            </div>
+
+             <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">NATHAN BOWER</div>
+            </div>
+
+             
+            <div class="person">
+                <div class="role">CHAIRPERSON</div>
+                <div class="name">TSHEPANG RANSOLASE</div>
+            </div>
+          
+            <div class="person">
+                <div class="role">VICE CHAIR</div>
+                <div class="name">DANIELLE ROODT</div>
+            </div>
+           
+            
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">MARY LITUKA</div>
+            </div>
+
+        <!-- Footer Page Indicator -->
+        <div style="text-align: center; color: #888; margin-top: 30px; font-size: 0.8rem;">
+            Page 2 
+        </div>
+
+    </div>
+</body>
+         
+        
+        <body class="layout-logo-left">
+
+    <div class="page-container">
+        
+        <!-- Top Bar: Title of the page and Page indicator -->
+        <div class="top-bar">
+            <span>CULTURE COMITEE</span>
+            <span class="page-number">Page 3</span>
+        </div>
+
+        <!-- Main Header -->
+        <h1 class="header-title">CULTURE COMITEE</h1>
+
+        <div class="main-content">
+            
+            <!-- LOGO SECTION -->
+            <div class="logo-section">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\images.jpg" alt="School Logo">
+                <div class="logo-text">Carpe Diem</div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="image-card">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\WhatsApp Image 2026-10-18 at 11.58.48 AM (3).jpeg" alt="Sport Committee Members">
+            </div>
+
+        </div>
+
+        <!-- NAMES SECTION -->
+        <div class="names-container">
+          
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">MAYLIE CLAASSEN</div>
+            </div>
+
+             <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">SUMARIE DANNHAUSER</div>
+            </div>
+
+             <div class="person">
+                <div class="role">VICE CHAIR</div>
+                <div class="name">JAYDEN BOOYSEN</div>
+            </div> 
+                       
+            <div class="person">
+                <div class="role">CHAIRPERSON</div>
+                <div class="name">BERNADINE VAN WYK</div>
+            </div>
+            
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">JOSHUA FORD</div>
+            </div>
+
+        <!-- Footer Page Indicator -->
+        <div style="text-align: center; color: #888; margin-top: 30px; font-size: 0.8rem;">
+            Page 3 
+        </div>
+
+    </div>
+
+</body>
+
+
+        <body class="layout-logo-right">
+
+    <div class="page-container">
+        
+        <!-- Top Bar: Title of the page and Page indicator -->
+        <div class="top-bar">
+            <span>ACADEMIC COMITEE</span>
+            <span class="page-number">Page 4</span>
+        </div>
+
+        <!-- Main Header -->
+        <h1 class="header-title">ACADEMIC COMITEE</h1>
+
+        <div class="main-content">
+            
+            <!-- LOGO SECTION -->
+            <div class="logo-section">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\images.jpg" alt="School Logo">
+                <div class="logo-text">Carpe Diem</div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="image-card">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\WhatsApp Image 2026-10-18 at 11.58.49 AM (2).jpeg" alt="Sport Committee Members">
+            </div>
+
+        </div>
+
+        <!-- NAMES SECTION -->
+        <div class="names-container">
+          
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">NJABULO MASEKO</div>
+            </div>
+            
+         <div class="person">
+                <div class="role">CHAIRPERSON</div>
+                <div class="name">ARKUPAL ARKUPAL</div>
+            </div>
+         
+             <div class="person">
+                <div class="role">VICE CHAIR</div>
+                <div class="name">CHIVANRI MANDERS</div>
+            </div>   
+            
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">TALISA DE BEER</div>
+            </div>  
+            
+            <div class="person">
+                <div class="role">MEMBER</div>
+                <div class="name">SIPHIWE QOBOKOANE</div>
+            </div>
+
+        <!-- Footer Page Indicator -->
+        <div style="text-align: center; color: #888; margin-top: 30px; font-size: 0.8rem;">
+            Page 4
+        </div>
+
+    </div>
+
+</body>
+
+          <body class="layout-logo-right">
+
+    <div class="page-container">
+        
+        <!-- Top Bar: Title of the page and Page indicator -->
+        <div class="top-bar">
+            <span>GRADE REPRESENTATIVES</span>
+            <span class="page-number">Page 4</span>
+        </div>
+
+        <!-- Main Header -->
+        <h1 class="header-title">GRADE REPRESENTATIVES</h1>
+
+        <div class="main-content">
+            
+            <!-- LOGO SECTION -->
+            <div class="logo-section">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\images.jpg" alt="School Logo">
+                <div class="logo-text">Carpe Diem</div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="image-card">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\Screenshot 2026-10-20 185838.png" alt="Sport Committee Members">
+            </div>
+
+        </div>
+
+        <!-- NAMES SECTION -->
+        <div class="names-container">
+          
+            <div class="person">
+                <div class="role">GRADE 9</div>
+                <div class="name">NEHA AUTAR</div>
+            </div>
+            
+         <div class="person">
+                <div class="role">GRADE 10</div>
+                <div class="name">HLONOLOFATSO MODISA</div>
+            </div>
+         
+             <div class="person">
+                <div class="role">GRADE 11</div>
+                <div class="name">LIANNE KRIEL</div>
+            </div>   
+        
+
+        <!-- Footer Page Indicator -->
+        <div style="text-align: center; color: #888; margin-top: 30px; font-size: 0.8rem;">
+            Page 5
+        </div>
+
+    </div>
+
+</body>
+
+       <body class="layout-logo-right">
+
+    <div class="page-container">
+        
+        <!-- Top Bar: Title of the page and Page indicator -->
+        <div class="top-bar">
+            <span>EXECUTIVE COMITEE</span>
+            <span class="page-number">Page 6</span>
+        </div>
+
+        <!-- Main Header -->
+        <h1 class="header-title">EXECUTIVE COMITEE</h1>
+
+        <div class="main-content">
+            
+            <!-- LOGO SECTION -->
+            <div class="logo-section">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\images.jpg" alt="School Logo">
+                <div class="logo-text">Carpe Diem</div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="image-card">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\Screenshot 2026-10-20 185838.png" alt="Sport Committee Members">
+            </div>
+
+        </div>
+
+        <!-- NAMES SECTION -->
+        <div class="names-container">
+          
+            <div class="person">
+                <div class="role">DISCIPLINE ADDITIONAL MEMBER</div>
+                <div class="name">YOLANDA MEMANE</div>
+            </div>
+            
+         <div class="person">
+                <div class="role">DISCIPLINE CHAIR</div>
+                <div class="name">HLONOLOFATSO MODISA</div>
+            </div>
+         
+             <div class="person">
+                <div class="role">TECHNOLOGY</div>
+                <div class="name">DUNCAN BIRKENSTOCK</div>
+            </div>  
+
+            <div class="person">
+                <div class="role">HEALTH AND WELLNESS</div>
+                <div class="name">KAAMILA KOWALSKA</div>
+            </div>   
+        
+
+        <!-- Footer Page Indicator -->
+        <div style="text-align: center; color: #888; margin-top: 30px; font-size: 0.8rem;">
+            Page 6
+        </div>
+
+    </div>
+
+</body>
+
+     <body class="layout-logo-right">
+
+    <div class="page-container">
+        
+        <!-- Top Bar: Title of the page and Page indicator -->
+        <div class="top-bar">
+            <span>EXECUTIVE COMITEE</span>
+            <span class="page-number">Page 7</span>
+        </div>
+
+        <!-- Main Header -->
+        <h1 class="header-title">EXECUTIVE COMITEE</h1>
+
+        <div class="main-content">
+            
+            <!-- LOGO SECTION -->
+            <div class="logo-section">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\images.jpg" alt="School Logo">
+                <div class="logo-text">Carpe Diem</div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="image-card">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\Screenshot 2026-10-20 185838.png" alt="Sport Committee Members">
+            </div>
+
+        </div>
+
+        <!-- NAMES SECTION -->
+        <div class="names-container">
+          
+            <div class="person">
+                <div class="role">SECRETARY</div>
+                <div class="name">TIFFANY FLATTERY</div>
+            </div>
+            
+         <div class="person">
+                <div class="role">FINANCE</div>
+                <div class="name">KAMOHELO SEGALO</div>
+            </div>
+         
+             <div class="person">
+                <div class="role">PUBLIC RELATIONS</div>
+                <div class="name">LESEDI MOTJEANE</div>
+            </div>  
+        
+
+        <!-- Footer Page Indicator -->
+        <div style="text-align: center; color: #888; margin-top: 30px; font-size: 0.8rem;">
+            Page 7
+        </div>
+
+    </div>
+
+</body>
+
+        <body class="layout-logo-right">
+
+    <div class="page-container">
+        
+        <!-- Top Bar: Title of the page and Page indicator -->
+        <div class="top-bar">
+            <span>RCL EXECUTIVE COMITEE</span>
+            <span class="page-number">Page 8</span>
+        </div>
+
+        <!-- Main Header -->
+        <h1 class="header-title">RCL EXECUTIVE COMITEE</h1>
+
+        <div class="main-content">
+            
+            <!-- LOGO SECTION -->
+            <div class="logo-section">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\images.jpg" alt="School Logo">
+                <div class="logo-text">Carpe Diem</div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="image-card">
+                <img src="C:\Users\USER-PC\Desktop\RCL stuff ;(\Screenshot 2026-10-20 190010.png" alt="Sport Committee Members">
+            </div>
+
+        </div>
+
+        <!-- NAMES SECTION -->
+        <div class="names-container">
+          
+            <div class="person">
+                <div class="role">VICE CHAIR</div>
+                <div class="name">MPILO PELEOWO</div>
+            </div>
+            
+         <div class="person">
+                <div class="role">CHAIRPERSON</div>
+                <div class="name">CLOE BORNMAN</div>
+            </div>
+         
+             <div class="person">
+                <div class="role">VICE CHAIRPERSON</div>
+                <div class="name">JODALI THEKISO</div>
+            </div>  
+        
+
+        <!-- Footer Page Indicator -->
+        <div style="text-align: center; color: #888; margin-top: 30px; font-size: 0.8rem;">
+            Page 8
+        </div>
+
+    </div>
+
 </body>
 </html>
